@@ -2,19 +2,16 @@ package zioExample.fsService
 
 import zio.{Has, Task, ZIO, ZLayer}
 import zioExample.Schema._
+import zioExample.service.Service
 
 object GCSFS {
 
   // service definition
-  trait GCSService {
-    def write(user: List[User]): Task[Unit]
 
-    def read(gcs_csv_path: String): Task[List[User]]
-  }
 
   // layer - service implementation
-  val live: ZLayer[Any, Nothing, Has[GCSFS.GCSService]] = ZLayer.succeed {
-    new GCSService {
+  val live: ZLayer[Any, Nothing, Has[Service]] = ZLayer.succeed {
+    new Service {
       override def write(user: List[User]): Task[Unit] = Task {
         println(s"writing data on GCS path: ")
       }
@@ -27,8 +24,8 @@ object GCSFS {
   }
 
   // accessor
-  def write(users: List[User]): ZIO[Has[GCSFS.GCSService], Throwable, Unit] = ZIO.accessM(_.get.write(users))
-
-  def read(path: String): ZIO[Has[GCSFS.GCSService], Throwable, List[User]] = ZIO.accessM(_.get.read(path))
+//  def write(users: List[User]): ZIO[Has[GCSFS.GCSService], Throwable, Unit] = ZIO.accessM(_.get.write(users))
+//
+//  def read(path: String): ZIO[Has[GCSFS.GCSService], Throwable, List[User]] = ZIO.accessM(_.get.read(path))
 
 }

@@ -2,18 +2,13 @@ package zioExample.dbService
 
 import zio.{Has, Task, ZIO, ZLayer}
 import zioExample.Schema._
+import zioExample.service.Service
 
 object BQ {
 
-  trait BQService {
-    def write(user: List[User]): Task[Unit]
-
-    def read(user_table: String): Task[List[User]]
-  }
-
   // layer - service implementation
-  val live: ZLayer[Any, Nothing, Has[BQ.BQService]] = ZLayer.succeed {
-    new BQService {
+  val live: ZLayer[Any, Nothing, Has[Service]] = ZLayer.succeed {
+    new Service {
       override def write(user: List[User]): Task[Unit] = Task {
         println(s"writing data in bq db: ")
       }
@@ -26,8 +21,8 @@ object BQ {
   }
 
   // accessor
-  def write(users: List[User]): ZIO[Has[BQ.BQService], Throwable, Unit] = ZIO.accessM(_.get.write(users))
-
-  def read(path: String): ZIO[Has[BQ.BQService], Throwable, List[User]] = ZIO.accessM(_.get.read(path))
+//  def write(users: List[User]): ZIO[Has[BQ.BQService], Throwable, Unit] = ZIO.accessM(_.get.write(users))
+//
+//  def read(path: String): ZIO[Has[BQ.BQService], Throwable, List[User]] = ZIO.accessM(_.get.read(path))
 
 }

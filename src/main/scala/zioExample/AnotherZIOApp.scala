@@ -2,20 +2,21 @@ package zioExample
 
 import zio.{ExitCode, ZIO}
 import zioExample.Schema._
-import zioExample.fsService.GCSFS._
-//import zioExample.fsService.LocalFS._
-//import zioExample.dbService.BQ._
-//import zioExample.dbService.SQLLite._
+import zioExample.service.Service
+//import zioExample.fsService.GCSFS
+//import zioExample.fsService.LocalFS
+import zioExample.dbService.BQ
+//import zioExample.dbService.SQLLite
 
 object AnotherZIOApp extends zio.App {
 
   val program = for {
-    _ <- write(List(user1,user2,user3,user4,user5,user6))
-    _ <- read("")
+    _ <- ZIO.service[Service].flatMap(s=>s.write(List(user1)))
+    _ <- ZIO.service[Service].flatMap(s=>s.read(""))
   } yield ()
 
   override def run(args: List[String]): ZIO[zio.ZEnv, Nothing, ExitCode] = {
-      program.provideLayer(live)
+      program.provideLayer(BQ.live)
       .exitCode
   }
 }

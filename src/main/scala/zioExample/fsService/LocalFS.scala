@@ -2,18 +2,13 @@ package zioExample.fsService
 
 import zio.{Has, Task, ZIO, ZLayer}
 import zioExample.Schema._
+import zioExample.service.Service
 
 object LocalFS {
 
-  trait LocalService {
-    def write(user: List[User]): Task[Unit]
-
-    def read(local_csv_path: String): Task[List[User]]
-  }
-
   // layer - service implementation
-  val live: ZLayer[Any, Nothing, Has[LocalFS.LocalService]] = ZLayer.succeed {
-    new LocalService {
+  val live: ZLayer[Any, Nothing, Has[Service]] = ZLayer.succeed {
+    new Service  {
       override def write(user: List[User]): Task[Unit] = Task {
         println(s"writing data on local path: ")
       }
@@ -26,8 +21,8 @@ object LocalFS {
   }
 
   // accessor
-  def write(users: List[User]): ZIO[Has[LocalFS.LocalService], Throwable, Unit] = ZIO.accessM(_.get.write(users))
-
-  def read(path: String): ZIO[Has[LocalFS.LocalService], Throwable, List[User]] = ZIO.accessM(_.get.read(path))
+//  def write(users: List[User]): ZIO[Has[LocalFS.LocalService], Throwable, Unit] = ZIO.accessM(_.get.write(users))
+//
+//  def read(path: String): ZIO[Has[LocalFS.LocalService], Throwable, List[User]] = ZIO.accessM(_.get.read(path))
 
 }
