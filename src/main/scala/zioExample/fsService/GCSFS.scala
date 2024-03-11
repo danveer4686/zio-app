@@ -1,4 +1,4 @@
-package zioExample
+package zioExample.fsService
 
 import zio.{Has, Task, ZIO, ZLayer}
 import zioExample.Schema._

@@ -2,10 +2,10 @@ package zioExample
 
 import zio.{ExitCode, ZIO}
 import zioExample.Schema._
-//import zioExample.GCSFS._
-//import zioExample.LocalFS._
-//import zioExample.BQ._
-import zioExample.SQLLite._
+import zioExample.fsService.GCSFS._
+//import zioExample.fsService.LocalFS._
+//import zioExample.dbService.BQ._
+//import zioExample.dbService.SQLLite._
 
 object AnotherZIOApp extends zio.App {
 

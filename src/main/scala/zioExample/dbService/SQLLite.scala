@@ -1,4 +1,4 @@
-package zioExample
+package zioExample.dbService
 
 import zio.{Has, Task, ZIO, ZLayer}
 import zioExample.Schema._
